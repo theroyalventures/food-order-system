@@ -4,1065 +4,1356 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Mom's Kitchen - Order Dashboard</title>
+<title>The Mom's Kitchen | POS</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+:root{
+  --bg:#07111f;
+  --panel:rgba(255,255,255,.075);
+  --line:rgba(255,255,255,.11);
+  --muted:rgba(255,255,255,.62);
+  --blue:#00bfff;
+  --green:#22c55e;
+  --orange:#ffb347;
 }
 
-body {
-  min-height: 100vh;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Poppins,sans-serif;
+}
+
+body{
+  min-height:100vh;
   background:
-    radial-gradient(circle at top left, rgba(0,180,255,.18), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(0,120,255,.12), transparent 35%),
-    linear-gradient(135deg, #07111f, #0d1c31 45%, #12284a);
-  color: #fff;
-  padding: 30px;
-  overflow-x: hidden;
+    radial-gradient(circle at top left,rgba(0,180,255,.18),transparent 35%),
+    radial-gradient(circle at bottom right,rgba(0,120,255,.12),transparent 35%),
+    linear-gradient(135deg,#07111f,#0d1c31 45%,#12284a);
+  color:#fff;
+  padding:26px;
 }
 
-.container {
-  max-width: 1400px;
-  margin: auto;
-  position: relative;
-  z-index: 2;
+.container{
+  max-width:1500px;
+  margin:auto;
 }
 
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:24px;
+  margin-bottom:25px;
+  flex-wrap:wrap;
 }
 
-.hero-left { max-width: 760px; }
-
-.badge {
-  display: inline-flex;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.1);
-  padding: 8px 14px;
-  border-radius: 999px;
-  color: #7fd7ff;
-  font-size: 12px;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
+.badge{
+  display:inline-block;
+  background:rgba(255,255,255,.08);
+  border:1px solid var(--line);
+  padding:8px 14px;
+  border-radius:999px;
+  color:#7fd7ff;
+  font-size:11px;
+  letter-spacing:1px;
+  margin-bottom:14px;
 }
 
-h1 {
-  font-size: clamp(30px, 5vw, 58px);
-  line-height: 1.08;
-  margin-bottom: 14px;
+h1{
+  font-size:clamp(30px,4vw,52px);
+  line-height:1.12;
+  margin-bottom:10px;
 }
 
-.hero p {
-  color: rgba(255,255,255,.72);
-  line-height: 1.7;
-  font-size: 15px;
+.hero p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+  max-width:680px;
 }
 
-.stats {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
+.stats{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
 }
 
-.card {
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 24px;
-  backdrop-filter: blur(22px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.25);
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:24px;
+  backdrop-filter:blur(18px);
+  box-shadow:0 18px 40px rgba(0,0,0,.22);
 }
 
-.stat-card {
-  min-width: 160px;
-  padding: 22px;
+.stat{
+  min-width:145px;
+  padding:20px 22px;
 }
 
-.stat-card span {
-  display: block;
-  color: rgba(255,255,255,.65);
-  font-size: 13px;
-  margin-bottom: 10px;
+.stat span{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:7px;
 }
 
-.stat-card h2 { font-size: 38px; }
+.stat strong{font-size:34px}
+.pending strong{color:var(--orange)}
+.ready strong{color:#69ffb0}
 
-.pending h2 { color: #ffb347; }
-.ready h2 { color: #69ffb0; }
-
-.grid {
-  display: grid;
-  grid-template-columns: 440px 1fr;
-  gap: 24px;
+.layout{
+  display:grid;
+  grid-template-columns:minmax(340px,440px) minmax(0,1fr);
+  gap:20px;
 }
 
-.panel { padding: 26px; }
-
-.panel h3 {
-  font-size: 23px;
-  margin-bottom: 8px;
+.panel{
+  padding:24px;
+  min-width:0;
 }
 
-.sub {
-  color: rgba(255,255,255,.6);
-  font-size: 13px;
-  margin-bottom: 24px;
+.panel h2{
+  font-size:21px;
+  margin-bottom:5px;
 }
 
-.input-group { margin-bottom: 17px; }
-
-.input-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  color: rgba(255,255,255,.75);
+.sub{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:20px;
 }
 
-.input-group input,
-.input-group textarea,
-.input-group select {
-  width: 100%;
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 13px;
-  padding: 13px 14px;
-  color: #fff;
-  font-size: 14px;
-  outline: none;
+.field{margin-bottom:15px}
+
+.field label{
+  display:block;
+  font-size:12px;
+  color:rgba(255,255,255,.78);
+  margin-bottom:7px;
 }
 
-.input-group select option {
-  background: #10213a;
-  color: #fff;
+input,select,textarea{
+  width:100%;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:12px;
+  padding:12px 13px;
+  color:#fff;
+  font-size:13px;
+  outline:none;
 }
 
-.input-group input:focus,
-.input-group select:focus {
-  border-color: #00bfff;
-  box-shadow: 0 0 0 3px rgba(0,191,255,.12);
+input:focus,select:focus,textarea:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(0,191,255,.12);
 }
 
-.input-group input::placeholder {
-  color: rgba(255,255,255,.35);
+input::placeholder,textarea::placeholder{
+  color:rgba(255,255,255,.35);
 }
 
-.item-row {
-  display: grid;
-  grid-template-columns: minmax(0,1.5fr) 65px 85px 85px 34px;
-  gap: 7px;
-  align-items: end;
-  padding: 12px;
-  margin-bottom: 10px;
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 15px;
-  background: rgba(255,255,255,.035);
+select option{
+  background:#10243c;
+  color:#fff;
 }
 
-.item-row .input-group { margin: 0; min-width: 0; }
-
-.item-row .input-group label {
-  font-size: 10px;
-  white-space: nowrap;
+.item-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:18px 0 10px;
 }
 
-.item-row input,
-.item-row select {
-  padding: 10px 7px;
-  font-size: 12px;
-  border-radius: 9px;
+.item-head b{font-size:14px}
+
+.text-btn{
+  border:1px solid rgba(0,191,255,.4);
+  color:#7fd7ff;
+  background:rgba(0,191,255,.08);
+  padding:8px 11px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:11px;
 }
 
-.item-row .item-price[readonly],
-.item-row .item-amount {
-  color: #8fe0ff;
+.item-row{
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.12);
+  border-radius:15px;
+  padding:12px;
+  margin-bottom:10px;
 }
 
-.custom-name {
-  margin-top: 6px;
-  display: none;
+.item-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 76px 100px 34px;
+  gap:8px;
+  align-items:end;
 }
 
-.remove-item {
-  height: 39px;
-  border: none;
-  border-radius: 9px;
-  background: rgba(255,90,90,.16);
-  color: #ff9b9b;
-  font-size: 20px;
-  cursor: pointer;
+.item-grid .field{margin:0}
+.item-grid label{font-size:10px}
+
+.item-grid input,.item-grid select{
+  padding:10px 8px;
+  font-size:12px;
 }
 
-.item-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin: 12px 0 18px;
+.manual-fields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:9px;
 }
 
-.add-item-btn {
-  border: 1px solid rgba(0,191,255,.35);
-  color: #8fe0ff;
-  background: rgba(0,191,255,.10);
-  padding: 11px 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
+.manual-fields.hidden{display:none}
+
+.remove-btn{
+  height:39px;
+  border:0;
+  border-radius:10px;
+  background:rgba(255,80,80,.15);
+  color:#ff9292;
+  cursor:pointer;
+  font-size:18px;
 }
 
-.grand-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 18px;
-  border-radius: 15px;
-  background: rgba(0,191,255,.10);
-  border: 1px solid rgba(0,191,255,.22);
-  font-weight: 600;
-  margin-bottom: 20px;
+.row-total{
+  text-align:right;
+  color:#aee9ff;
+  font-size:12px;
+  margin-top:8px;
 }
 
-.grand-total strong {
-  font-size: 23px;
-  color: #8fe0ff;
+.totals{
+  border-top:1px solid var(--line);
+  padding-top:14px;
+  margin-top:15px;
 }
 
-.btn {
-  border: none;
-  width: 100%;
-  padding: 16px;
-  border-radius: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
+.total-line{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-size:13px;
+  margin:8px 0;
+  color:var(--muted);
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #00bfff, #4c6fff);
-  color: #fff;
-  box-shadow: 0 12px 28px rgba(0,140,255,.35);
+.total-line.grand{
+  font-size:19px;
+  color:#fff;
+  font-weight:700;
+  margin-top:12px;
 }
 
-.top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 22px;
-  flex-wrap: wrap;
+.btn{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  padding:14px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:14px;
 }
 
-.search { width: 300px; max-width: 100%; }
-
-.orders {
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  padding-bottom: 10px;
+.primary{
+  background:linear-gradient(135deg,#00bfff,#4c6fff);
+  color:#fff;
+  box-shadow:0 10px 25px rgba(0,140,255,.25);
 }
 
-.order-card {
-  min-width: 340px;
-  max-width: 380px;
-  flex-shrink: 0;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 20px;
-  padding: 20px;
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
 }
 
-.order-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 18px;
+.top-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
 }
 
-.order-head h4 { font-size: 19px; }
+.search{max-width:310px}
 
-.order-id {
-  color: #7fd7ff;
-  font-size: 12px;
+.orders{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;
 }
 
-.status {
-  padding: 8px 13px;
-  border-radius: 999px;
-  font-size: 11px;
-  height: fit-content;
-  font-weight: 600;
+.order-card{
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:17px;
+  min-width:0;
 }
 
-.status.pending {
-  background: rgba(255,179,71,.14);
-  color: #ffb347;
+.order-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+  margin-bottom:13px;
 }
 
-.status.ready {
-  background: rgba(105,255,176,.12);
-  color: #69ffb0;
+.order-id{
+  font-size:11px;
+  color:#7fd7ff;
 }
 
-.order-info {
-  display: grid;
-  gap: 10px;
-  color: rgba(255,255,255,.75);
-  font-size: 13px;
-  margin-bottom: 18px;
+.order-head h3{
+  font-size:17px;
+  margin-top:3px;
+  overflow-wrap:anywhere;
 }
 
-.order-line {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 5px 0;
+.status{
+  font-size:10px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-weight:700;
+  white-space:nowrap;
 }
 
-.order-total-line {
-  border-top: 1px solid rgba(255,255,255,.15);
-  margin-top: 8px;
-  padding-top: 12px;
-  font-weight: 700;
-  color: #8fe0ff;
+.status.pending{
+  color:var(--orange);
+  background:rgba(255,179,71,.13);
+  border:1px solid rgba(255,179,71,.3);
 }
 
-.actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.status.ready{
+  color:#69ffb0;
+  background:rgba(105,255,176,.1);
+  border:1px solid rgba(105,255,176,.25);
 }
 
-.small-btn {
-  flex: 1;
-  min-width: 130px;
-  border: none;
-  padding: 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  color: white;
+.order-info{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.8;
+  margin-bottom:12px;
+  overflow-wrap:anywhere;
 }
 
-.ready-btn {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+.order-items{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:9px 0;
+  margin:8px 0;
 }
 
-.whatsapp-btn {
-  background: linear-gradient(135deg, #25D366, #128C7E);
+.order-item{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:11px;
+  color:rgba(255,255,255,.82);
+  padding:3px 0;
 }
 
-.empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: rgba(255,255,255,.45);
-  border: 1px dashed rgba(255,255,255,.12);
-  border-radius: 20px;
-  width: 100%;
+.order-total{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  font-weight:700;
+  margin-top:8px;
 }
 
-@media(max-width:1050px) {
-  .grid { grid-template-columns: 1fr; }
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:13px;
 }
 
-@media(max-width:600px) {
-  body { padding: 14px; }
-  .panel { padding: 17px; }
-  .hero { align-items: flex-start; }
-  .item-row {
-    grid-template-columns: minmax(0,1fr) 65px;
+.small-btn{
+  flex:1;
+  border:0;
+  border-radius:10px;
+  padding:10px 8px;
+  color:#fff;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.ready-btn{
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+}
+
+.wa-btn{
+  background:linear-gradient(135deg,#25D366,#128C7E);
+}
+
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:55px 15px;
+  border:1px dashed var(--line);
+  border-radius:18px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.notice{
+  font-size:11px;
+  color:var(--muted);
+  margin:0 0 15px;
+  min-height:16px;
+}
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:10;
+  background:#17324d;
+  border:1px solid var(--line);
+  padding:12px 16px;
+  border-radius:12px;
+  box-shadow:0 10px 30px #0005;
+  font-size:12px;
+  display:none;
+  max-width:90vw;
+}
+
+.toast.show{display:block}
+.error{color:#ffaaaa}
+
+@media(max-width:1000px){
+  body{padding:16px}
+  .layout{grid-template-columns:1fr}
+  .hero{align-items:flex-start;flex-direction:column}
+  .stats{width:100%}
+  .stat{flex:1}
+}
+
+@media(max-width:560px){
+  .panel{padding:17px}
+  .item-grid{
+    grid-template-columns:minmax(0,1fr) 62px 82px 32px;
+    gap:5px;
   }
-  .item-row .item-select-wrap { grid-column: 1 / -1; }
-  .item-row .remove-item {
-    grid-column: 2;
-    grid-row: 2;
+  .item-grid input,.item-grid select{
+    font-size:11px;
+    padding:9px 5px;
   }
-  .order-card {
-    min-width: 85vw;
-    max-width: 85vw;
-  }
+  .orders{grid-template-columns:1fr}
+  .stat{min-width:0;padding:15px}
+  .stat strong{font-size:28px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-  <div class="hero">
-    <div class="hero-left">
-      <div class="badge">THE MOM'S KITCHEN • ORDER DASHBOARD</div>
-      <h1>Manage Orders & Notify Customers</h1>
-      <p>Create orders, calculate bills automatically, track preparation and notify customers through WhatsApp.</p>
+<header class="hero">
+  <div>
+    <div class="badge">THE MOM'S KITCHEN • POS & ORDER MANAGEMENT</div>
+    <h1>Orders made simple.</h1>
+    <p>
+      Create multi-item orders, calculate prices automatically,
+      track preparation and notify customers through WhatsApp.
+      Orders are stored in your Google Sheet.
+    </p>
+  </div>
+
+  <div class="stats">
+    <div class="card stat pending">
+      <span>Total Pending</span>
+      <strong id="pendingCount">0</strong>
     </div>
 
-    <div class="stats">
-      <div class="card stat-card pending">
-        <span>Total Pending</span>
-        <h2 id="pendingCount">0</h2>
-      </div>
+    <div class="card stat ready">
+      <span>Ready to Serve</span>
+      <strong id="readyCount">0</strong>
+    </div>
+  </div>
+</header>
 
-      <div class="card stat-card ready">
-        <span>Ready To Serve</span>
-        <h2 id="readyCount">0</h2>
-      </div>
+<main class="layout">
+
+<section class="card panel">
+  <h2>Create New Order</h2>
+  <p class="sub">Enter customer details and add one or more items.</p>
+
+  <div class="notice" id="connectionStatus">
+    Connecting to Google Sheet…
+  </div>
+
+  <div class="field">
+    <label for="customerName">Customer Name *</label>
+    <input id="customerName" placeholder="Enter customer name">
+  </div>
+
+  <div class="field">
+    <label for="customerPhone">Contact Number *</label>
+    <input id="customerPhone" type="tel" placeholder="Enter mobile number">
+  </div>
+
+  <div class="item-head">
+    <b>Order Details</b>
+    <button class="text-btn" type="button" onclick="addItemRow()">
+      + Add Item
+    </button>
+  </div>
+
+  <div id="itemsContainer"></div>
+
+  <div class="field" style="margin-top:12px">
+    <label for="discount">Discount (₹)</label>
+    <input
+      id="discount"
+      type="number"
+      min="0"
+      step="0.01"
+      value="0"
+      oninput="updateTotals()"
+    >
+  </div>
+
+  <div class="field">
+    <label for="orderNotes">Order Notes (optional)</label>
+    <textarea id="orderNotes" rows="2" placeholder="Special instructions…"></textarea>
+  </div>
+
+  <div class="totals">
+    <div class="total-line">
+      <span>Subtotal</span>
+      <b id="subtotal">₹0.00</b>
+    </div>
+
+    <div class="total-line">
+      <span>Discount</span>
+      <b id="discountView">₹0.00</b>
+    </div>
+
+    <div class="total-line grand">
+      <span>Grand Total</span>
+      <b id="grandTotal">₹0.00</b>
     </div>
   </div>
 
-  <div class="grid">
+  <button
+    class="btn primary"
+    id="createBtn"
+    type="button"
+    onclick="createOrder()"
+  >
+    + Create Order
+  </button>
+</section>
 
-    <!-- CREATE ORDER -->
-    <div class="card panel">
-
-      <h3>Create New Order</h3>
-      <p class="sub">Enter customer information and add order items.</p>
-
-      <div class="input-group">
-        <label>Customer Name</label>
-        <input type="text" id="customerName" placeholder="Enter customer name">
-      </div>
-
-      <div class="input-group">
-        <label>Contact Number</label>
-        <input type="tel" id="customerPhone" placeholder="Enter mobile number">
-      </div>
-
-      <div class="input-group">
-        <label>Order Details</label>
-        <div id="orderItems"></div>
-      </div>
-
-      <div class="item-toolbar">
-        <button type="button" class="add-item-btn" onclick="addItemRow()">
-          + Add Item
-        </button>
-        <span style="font-size:11px;color:#aaa;">
-          Select item and enter quantity
-        </span>
-      </div>
-
-      <div class="grand-total">
-        <span>Grand Total</span>
-        <strong id="orderGrandTotal">₹0.00</strong>
-      </div>
-
-      <button class="btn btn-primary" onclick="addOrder()">
-        + Create Order
-      </button>
-
+<section class="card panel">
+  <div class="top-row">
+    <div>
+      <h2>Live Orders</h2>
+      <p class="sub" style="margin:5px 0 0">
+        Orders are loaded from your Google Sheet.
+      </p>
     </div>
 
-    <!-- LIVE ORDERS -->
-    <div class="card panel">
-
-      <div class="top-row">
-        <div>
-          <h3>Live Orders</h3>
-          <p class="sub" style="margin:6px 0 0;">
-            Search and manage customer orders.
-          </p>
-        </div>
-
-        <div class="input-group search" style="margin:0;">
-          <input
-            type="text"
-            id="search"
-            placeholder="Search by name or number"
-            oninput="renderOrders()"
-          >
-        </div>
-      </div>
-
-      <div id="ordersList" class="orders"></div>
-
-    </div>
-
+    <input
+      class="search"
+      id="search"
+      placeholder="Search name, phone or order ID…"
+      oninput="renderOrders()"
+    >
   </div>
 
+  <div class="notice" id="ordersStatus"></div>
+
+  <div id="ordersList" class="orders">
+    <div class="empty">Loading saved orders…</div>
+  </div>
+</section>
+
+</main>
 </div>
+
+<div id="toast" class="toast"></div>
 
 <script>
 
-// =====================================
-// MENU / ITEM MASTER
-// =====================================
+/* =========================================
+   IMPORTANT:
+   Paste your deployed Apps Script /exec URL
+   ========================================= */
 
-// Add or update your menu items and prices here.
+const API_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 
-const MENU_ITEMS = [
-  { name: "Tea", price: 20 },
-  { name: "Lunch", price: 90 },
-  { name: "Aloo Paratha", price: 40 },
-  { name: "Coffee", price: 20 },
-  { name: "Cold Drink", price: 40 },
-  { name: "Water Bottle", price: 20 }
-];
-
-// Orders storage
+let products = [];
 let orders = [];
+let rowCounter = 0;
 
+const $ = id => document.getElementById(id);
 
-// =====================================
-// HELPER FUNCTIONS
-// =====================================
-
-function money(value) {
-  return "₹" + Number(value || 0).toFixed(2);
-}
-
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[char]));
-}
-
-
-// =====================================
-// ADD ITEM ROW
-// =====================================
-
-function addItemRow() {
-
-  const container = document.getElementById("orderItems");
-
-  const row = document.createElement("div");
-  row.className = "item-row";
-
-  const options = MENU_ITEMS.map(item => `
-    <option value="${escapeHtml(item.name)}">
-      ${escapeHtml(item.name)} - ${money(item.price)}
-    </option>
-  `).join("");
-
-  row.innerHTML = `
-
-    <div class="input-group item-select-wrap">
-
-      <label>Item Name</label>
-
-      <select class="item-select" onchange="handleItemChange(this)">
-
-        <option value="">Select Item</option>
-
-        ${options}
-
-        <option value="__custom__">+ Custom Item</option>
-
-      </select>
-
-      <input
-        type="text"
-        class="custom-name"
-        placeholder="Enter item name"
-      >
-
-    </div>
-
-    <div class="input-group">
-      <label>Qty</label>
-      <input
-        type="number"
-        class="item-qty"
-        min="1"
-        step="1"
-        value="1"
-        oninput="updateItemTotals()"
-      >
-    </div>
-
-    <div class="input-group">
-      <label>Price</label>
-      <input
-        type="number"
-        class="item-price"
-        min="0"
-        step="0.01"
-        placeholder="0"
-        readonly
-        oninput="updateItemTotals()"
-      >
-    </div>
-
-    <div class="input-group">
-      <label>Amount</label>
-      <input
-        type="text"
-        class="item-amount"
-        value="₹0.00"
-        readonly
-      >
-    </div>
-
-    <button
-      type="button"
-      class="remove-item"
-      onclick="removeItemRow(this)"
-      title="Remove item"
-    >×</button>
-
-  `;
-
-  container.appendChild(row);
-
-  updateItemTotals();
-
-}
-
-
-// =====================================
-// ITEM SELECTION / AUTO PRICE
-// =====================================
-
-function handleItemChange(select) {
-
-  const row = select.closest(".item-row");
-
-  const customName = row.querySelector(".custom-name");
-  const priceInput = row.querySelector(".item-price");
-
-  if (select.value === "__custom__") {
-
-    customName.style.display = "block";
-
-    priceInput.readOnly = false;
-    priceInput.value = "";
-
-  } else {
-
-    customName.style.display = "none";
-    customName.value = "";
-
-    priceInput.readOnly = true;
-
-    const item = MENU_ITEMS.find(
-      product => product.name === select.value
-    );
-
-    priceInput.value = item ? item.price : "";
-
+const money = n => '₹' + Number(n || 0).toLocaleString(
+  'en-IN',
+  {
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
   }
+);
 
-  updateItemTotals();
+const escapeHtml = value => String(value ?? '').replace(
+  /[&<>"']/g,
+  ch => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[ch])
+);
 
-}
+/* =========================================
+   NOTIFICATION
+   ========================================= */
 
+function toast(message,isError=false){
+  const el = $('toast');
 
-// =====================================
-// REMOVE ITEM
-// =====================================
+  el.textContent = message;
+  el.classList.toggle('error',isError);
+  el.classList.add('show');
 
-function removeItemRow(button) {
+  clearTimeout(toast.timer);
 
-  const rows = document.querySelectorAll(
-    "#orderItems .item-row"
+  toast.timer = setTimeout(
+    () => el.classList.remove('show'),
+    3500
   );
-
-  if (rows.length === 1) {
-
-    const row = button.closest(".item-row");
-
-    row.querySelector(".item-select").value = "";
-    row.querySelector(".custom-name").value = "";
-    row.querySelector(".custom-name").style.display = "none";
-    row.querySelector(".item-price").value = "";
-    row.querySelector(".item-qty").value = 1;
-
-  } else {
-
-    button.closest(".item-row").remove();
-
-  }
-
-  updateItemTotals();
-
 }
 
+/* =========================================
+   GOOGLE APPS SCRIPT API
+   JSONP avoids browser CORS restrictions
+   ========================================= */
 
-// =====================================
-// AUTOMATIC CALCULATION
-// =====================================
+function api(action,data={}){
 
-function updateItemTotals() {
+  return new Promise((resolve,reject)=>{
 
-  let grandTotal = 0;
-
-  document.querySelectorAll(
-    "#orderItems .item-row"
-  ).forEach(row => {
-
-    const qty = Number(
-      row.querySelector(".item-qty").value
-    ) || 0;
-
-    const price = Number(
-      row.querySelector(".item-price").value
-    ) || 0;
-
-    const amount = qty * price;
-
-    row.querySelector(".item-amount").value =
-      money(amount);
-
-    grandTotal += amount;
-
-  });
-
-  document.getElementById(
-    "orderGrandTotal"
-  ).textContent = money(grandTotal);
-
-}
-
-
-// =====================================
-// GET SELECTED ITEMS
-// =====================================
-
-function getOrderItems() {
-
-  const items = [];
-
-  document.querySelectorAll(
-    "#orderItems .item-row"
-  ).forEach(row => {
-
-    const select = row.querySelector(".item-select");
-
-    const name = select.value === "__custom__"
-      ? row.querySelector(".custom-name").value.trim()
-      : select.value;
-
-    const qty = Number(
-      row.querySelector(".item-qty").value
-    );
-
-    const priceInput = row.querySelector(".item-price");
-    const price = Number(priceInput.value);
-
-    if (
-      name &&
-      Number.isInteger(qty) &&
-      qty > 0 &&
-      priceInput.value !== "" &&
-      Number.isFinite(price) &&
-      price >= 0
-    ) {
-
-      items.push({
-        name,
-        qty,
-        price,
-        amount: qty * price
-      });
-
+    if(
+      !API_URL.startsWith('https://script.google.com/') ||
+      !API_URL.endsWith('/exec')
+    ){
+      reject(new Error(
+        'Set the deployed Apps Script /exec URL in API_URL first.'
+      ));
+      return;
     }
 
+    const callbackName =
+      'tmk_cb_' +
+      Date.now() +
+      '_' +
+      Math.floor(Math.random()*100000);
+
+    const script = document.createElement('script');
+
+    const params = new URLSearchParams({
+      action:action,
+      callback:callbackName,
+      _:String(Date.now())
+    });
+
+    if(data && Object.keys(data).length){
+      params.set('data',JSON.stringify(data));
+    }
+
+    const timer = setTimeout(
+      () => finish(new Error('Google Sheet request timed out.')),
+      20000
+    );
+
+    function cleanup(){
+      clearTimeout(timer);
+      delete window[callbackName];
+
+      if(script.parentNode){
+        script.parentNode.removeChild(script);
+      }
+    }
+
+    function finish(error,result){
+      cleanup();
+
+      if(error){
+        reject(error);
+      }else if(!result || result.ok !== true){
+        reject(new Error(
+          result && result.error
+            ? result.error
+            : 'Request failed.'
+        ));
+      }else{
+        resolve(result);
+      }
+    }
+
+    window[callbackName] = result => finish(null,result);
+
+    script.onerror = () => finish(
+      new Error('Could not reach Apps Script. Check deployment URL and access settings.')
+    );
+
+    script.src = API_URL + '?' + params.toString();
+
+    document.body.appendChild(script);
   });
-
-  return items;
-
 }
 
+/* =========================================
+   PRODUCT DROPDOWN
+   ========================================= */
 
-// =====================================
-// CREATE NEW ORDER
-// =====================================
+function productOptions(selected=''){
 
-function addOrder() {
+  const options = [
+    '<option value="">Select an item…</option>'
+  ];
 
-  const name = document.getElementById(
-    "customerName"
-  ).value.trim();
+  products.forEach(p=>{
+    options.push(`
+      <option
+        value="${escapeHtml(p.id)}"
+        ${p.id===selected?'selected':''}
+      >
+        ${escapeHtml(p.name)} — ${money(p.price)}
+      </option>
+    `);
+  });
 
-  const phone = document.getElementById(
-    "customerPhone"
-  ).value.trim();
+  options.push(
+    '<option value="__manual__">＋ Manual item</option>'
+  );
+
+  return options.join('');
+}
+
+/* =========================================
+   ADD ITEM ROW
+   ========================================= */
+
+function addItemRow(){
+
+  const id = 'itemrow_' + (++rowCounter);
+
+  const wrapper = document.createElement('div');
+
+  wrapper.className = 'item-row';
+  wrapper.id = id;
+
+  wrapper.innerHTML = `
+    <div class="item-grid">
+
+      <div class="field">
+        <label>Item</label>
+        <select
+          class="product-select"
+          onchange="onProductChange('${id}')"
+        >
+          ${productOptions()}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Qty</label>
+        <input
+          class="qty"
+          type="number"
+          min="0.01"
+          step="0.01"
+          value="1"
+          oninput="updateRowTotal('${id}')"
+        >
+      </div>
+
+      <div class="field">
+        <label>Unit Price</label>
+        <input
+          class="unit-price"
+          type="number"
+          min="0"
+          step="0.01"
+          value="0"
+          oninput="updateRowTotal('${id}')"
+        >
+      </div>
+
+      <button
+        class="remove-btn"
+        type="button"
+        onclick="removeItemRow('${id}')"
+        title="Remove item"
+      >×</button>
+
+    </div>
+
+    <div class="manual-fields hidden">
+
+      <div class="field">
+        <label>Manual item name</label>
+        <input
+          class="manual-name"
+          placeholder="Enter item name"
+          oninput="updateRowTotal('${id}')"
+        >
+      </div>
+
+      <div class="field">
+        <label>Manual price (₹)</label>
+        <input
+          class="manual-price"
+          type="number"
+          min="0"
+          step="0.01"
+          value="0"
+          oninput="updateManualPrice('${id}')"
+        >
+      </div>
+
+    </div>
+
+    <div class="row-total">
+      Item Total: <b class="line-total">₹0.00</b>
+    </div>
+  `;
+
+  $('itemsContainer').appendChild(wrapper);
+
+  updateRowTotal(id);
+}
+
+/* =========================================
+   PRODUCT SELECTION
+   ========================================= */
+
+function onProductChange(id){
+
+  const row = $(id);
+
+  const select = row.querySelector('.product-select');
+  const manual = row.querySelector('.manual-fields');
+  const priceInput = row.querySelector('.unit-price');
+
+  if(select.value === '__manual__'){
+
+    manual.classList.remove('hidden');
+
+    priceInput.value =
+      row.querySelector('.manual-price').value || 0;
+
+  }else{
+
+    manual.classList.add('hidden');
+
+    const product = products.find(
+      p => p.id === select.value
+    );
+
+    priceInput.value = product ? product.price : 0;
+  }
+
+  updateRowTotal(id);
+}
+
+function updateManualPrice(id){
+
+  const row = $(id);
+
+  row.querySelector('.unit-price').value =
+    row.querySelector('.manual-price').value || 0;
+
+  updateRowTotal(id);
+}
+
+/* =========================================
+   ITEM TOTALS
+   ========================================= */
+
+function updateRowTotal(id){
+
+  const row = $(id);
+
+  if(!row) return;
+
+  const qty = Number(
+    row.querySelector('.qty').value
+  ) || 0;
+
+  const price = Number(
+    row.querySelector('.unit-price').value
+  ) || 0;
+
+  row.querySelector('.line-total').textContent =
+    money(qty * price);
+
+  updateTotals();
+}
+
+function removeItemRow(id){
+
+  const row = $(id);
+
+  if(row) row.remove();
+
+  if(!$('itemsContainer').children.length){
+    addItemRow();
+  }
+
+  updateTotals();
+}
+
+/* =========================================
+   COLLECT ORDER ITEMS
+   ========================================= */
+
+function getOrderItems(){
+
+  return [
+    ...$('itemsContainer').querySelectorAll('.item-row')
+  ].map(row=>{
+
+    const select = row.querySelector('.product-select');
+
+    const isManual = select.value === '__manual__';
+
+    const product = products.find(
+      p => p.id === select.value
+    );
+
+    const name = isManual
+      ? row.querySelector('.manual-name').value.trim()
+      : (product ? product.name : '');
+
+    const qty = Number(
+      row.querySelector('.qty').value
+    );
+
+    const price = Number(
+      row.querySelector('.unit-price').value
+    );
+
+    return {
+      name:name,
+      qty:qty,
+      price:price,
+      type:isManual ? 'Manual' : 'Product'
+    };
+
+  }).filter(item=>item.name && item.qty>0);
+}
+
+/* =========================================
+   SUBTOTAL AND GRAND TOTAL
+   ========================================= */
+
+function updateTotals(){
 
   const items = getOrderItems();
 
-  if (!name || !phone || !items.length) {
-
-    alert(
-      "Please enter customer name, mobile number and at least one valid item."
-    );
-
-    return;
-
-  }
-
-  if (!/^\d{10}$/.test(phone)) {
-
-    alert("Please enter a valid 10-digit mobile number.");
-
-    return;
-
-  }
-
-  const total = items.reduce(
-    (sum, item) => sum + item.amount,
+  const subtotal = items.reduce(
+    (sum,item)=>sum + item.qty * item.price,
     0
   );
 
-  const order = {
+  const discount = Math.max(
+    0,
+    Number($('discount').value) || 0
+  );
 
-    id: "ORD" + Date.now().toString().slice(-6),
+  $('subtotal').textContent = money(subtotal);
+  $('discountView').textContent = money(discount);
 
-    name,
-
-    phone,
-
-    items,
-
-    total,
-
-    status: "Pending",
-
-    time: new Date().toLocaleString()
-
-  };
-
-  orders.unshift(order);
-
-  document.getElementById("customerName").value = "";
-  document.getElementById("customerPhone").value = "";
-
-  document.getElementById("orderItems").innerHTML = "";
-
-  addItemRow();
-
-  renderOrders();
-
+  $('grandTotal').textContent =
+    money(Math.max(0,subtotal-discount));
 }
 
+/* =========================================
+   RESET FORM
+   ========================================= */
 
-// =====================================
-// RENDER LIVE ORDERS
-// =====================================
+function clearForm(){
 
-function renderOrders() {
+  $('customerName').value = '';
+  $('customerPhone').value = '';
+  $('discount').value = '0';
+  $('orderNotes').value = '';
 
-  const search = document.getElementById(
-    "search"
-  ).value.toLowerCase();
+  $('itemsContainer').innerHTML = '';
 
-  const ordersList = document.getElementById(
-    "ordersList"
+  addItemRow();
+  updateTotals();
+}
+
+/* =========================================
+   CREATE ORDER AND SAVE TO SHEET
+   ========================================= */
+
+async function createOrder(){
+
+  const name = $('customerName').value.trim();
+  const phone = $('customerPhone').value.trim();
+
+  const items = getOrderItems();
+
+  const discount = Number($('discount').value) || 0;
+
+  const subtotal = items.reduce(
+    (sum,item)=>sum + item.qty * item.price,
+    0
   );
 
-  const filtered = orders.filter(order =>
+  if(!name){
+    return toast('Enter customer name.',true);
+  }
 
-    order.name.toLowerCase().includes(search) ||
-    order.phone.includes(search) ||
-    order.id.toLowerCase().includes(search)
+  if(phone.replace(/\D/g,'').length < 10){
+    return toast('Enter a valid mobile number.',true);
+  }
 
+  if(!items.length){
+    return toast('Add at least one valid item.',true);
+  }
+
+  const rowCount = [
+    ...$('itemsContainer').querySelectorAll('.item-row')
+  ].length;
+
+  if(items.length !== rowCount){
+    return toast(
+      'Please complete or remove every item row.',
+      true
+    );
+  }
+
+  if(discount < 0 || discount > subtotal){
+    return toast(
+      'Discount must be between ₹0 and subtotal.',
+      true
+    );
+  }
+
+  const button = $('createBtn');
+
+  button.disabled = true;
+  button.textContent = 'Saving order…';
+
+  try{
+
+    const result = await api('createOrder',{
+      name:name,
+      phone:phone,
+      items:items,
+      discount:discount,
+      notes:$('orderNotes').value.trim()
+    });
+
+    orders.unshift(result.order);
+
+    renderOrders();
+    clearForm();
+
+    toast(
+      'Order ' + result.order.id + ' saved to Google Sheet.'
+    );
+
+  }catch(error){
+
+    toast(error.message,true);
+
+  }finally{
+
+    button.disabled = false;
+    button.textContent = '+ Create Order';
+  }
+}
+
+/* =========================================
+   DISPLAY ORDERS
+   ========================================= */
+
+function renderOrders(){
+
+  const query = $('search').value.trim().toLowerCase();
+
+  const filtered = orders.filter(order=>
+    [
+      order.name,
+      order.phone,
+      order.id
+    ].some(value=>
+      String(value || '').toLowerCase().includes(query)
+    )
   );
 
-  document.getElementById(
-    "pendingCount"
-  ).textContent = orders.filter(
-    o => o.status === "Pending"
-  ).length;
+  $('pendingCount').textContent =
+    orders.filter(o=>o.status==='Pending').length;
 
-  document.getElementById(
-    "readyCount"
-  ).textContent = orders.filter(
-    o => o.status === "Ready"
-  ).length;
+  $('readyCount').textContent =
+    orders.filter(o=>o.status==='Ready').length;
 
-  if (!filtered.length) {
+  if(!filtered.length){
 
-    ordersList.innerHTML = `
+    $('ordersList').innerHTML =
+      '<div class="empty">No matching orders found.</div>';
+
+    return;
+  }
+
+  $('ordersList').innerHTML = filtered.map(order=>{
+
+    const itemHtml = (order.items || []).map(item=>`
+      <div class="order-item">
+        <span>
+          ${escapeHtml(item.name)} × ${Number(item.qty)}
+        </span>
+        <b>
+          ${money(item.lineTotal ?? item.qty*item.price)}
+        </b>
+      </div>
+    `).join('');
+
+    const discountHtml = Number(order.discount)>0
+      ? `
+        <div class="order-item">
+          <span>Discount</span>
+          <b>−${money(order.discount)}</b>
+        </div>
+      `
+      : '';
+
+    return `
+      <article class="order-card">
+
+        <div class="order-head">
+          <div>
+            <div class="order-id">
+              #${escapeHtml(order.id)}
+            </div>
+            <h3>${escapeHtml(order.name)}</h3>
+          </div>
+
+          <span class="status ${
+            order.status==='Ready'?'ready':'pending'
+          }">
+            ${escapeHtml(order.status)}
+          </span>
+        </div>
+
+        <div class="order-info">
+          <div>
+            <b>Phone:</b> ${escapeHtml(order.phone)}
+          </div>
+
+          <div>
+            <b>Created:</b> ${escapeHtml(order.time)}
+          </div>
+
+          ${
+            order.notes
+              ? `<div><b>Note:</b> ${escapeHtml(order.notes)}</div>`
+              : ''
+          }
+        </div>
+
+        <div class="order-items">
+          ${itemHtml}
+          ${discountHtml}
+        </div>
+
+        <div class="order-total">
+          <span>Order Total</span>
+          <b>${money(order.total)}</b>
+        </div>
+
+        <div class="actions">
+
+          ${
+            order.status==='Pending'
+              ? `
+                <button
+                  class="small-btn ready-btn"
+                  onclick="markReady('${escapeHtml(order.id)}')"
+                >
+                  Mark Ready
+                </button>
+              `
+              : ''
+          }
+
+          <button
+            class="small-btn wa-btn"
+            onclick="sendWhatsApp('${escapeHtml(order.id)}')"
+          >
+            WhatsApp Customer
+          </button>
+
+        </div>
+      </article>
+    `;
+
+  }).join('');
+}
+
+/* =========================================
+   UPDATE STATUS IN GOOGLE SHEET
+   ========================================= */
+
+async function markReady(id){
+
+  const order = orders.find(o=>o.id===id);
+
+  if(!order || order.status==='Ready') return;
+
+  try{
+
+    await api('updateStatus',{
+      orderId:id,
+      status:'Ready'
+    });
+
+    order.status = 'Ready';
+
+    renderOrders();
+
+    toast('Order marked Ready and updated in Google Sheet.');
+
+  }catch(error){
+
+    toast(error.message,true);
+  }
+}
+
+/* =========================================
+   WHATSAPP CUSTOMER MESSAGE
+   ========================================= */
+
+function sendWhatsApp(id){
+
+  const order = orders.find(o=>o.id===id);
+
+  if(!order) return;
+
+  let phone = String(order.phone).replace(/\D/g,'');
+
+  if(phone.length===10){
+    phone = '91' + phone;
+  }
+
+  const itemLines = (order.items || []).map(item=>
+    `${item.name} x ${item.qty} = ${
+      money(item.lineTotal ?? item.qty*item.price)
+    }`
+  ).join('\n');
+
+  const message = `
+Hello ${order.name},
+
+Your order ${order.id} at The Mom's Kitchen is ${
+    order.status==='Ready'
+      ? 'ready and waiting for you'
+      : 'being prepared'
+  }.
+
+Order Details:
+${itemLines}
+
+Total: ${money(order.total)}
+
+Thank you for choosing The Mom's Kitchen!
+  `.trim();
+
+  window.open(
+    'https://wa.me/' +
+    phone +
+    '?text=' +
+    encodeURIComponent(message),
+    '_blank'
+  );
+}
+
+/* =========================================
+   LOAD PRODUCTS AND ORDERS FROM SHEET
+   ========================================= */
+
+async function loadData(){
+
+  $('connectionStatus').textContent =
+    'Connecting to Google Sheet…';
+
+  $('ordersStatus').textContent =
+    'Loading saved orders…';
+
+  try{
+
+    const data = await api('bootstrap');
+
+    products = data.products || [];
+    orders = data.orders || [];
+
+    $('connectionStatus').textContent =
+      `Connected • ${products.length} active products loaded`;
+
+    $('ordersStatus').textContent =
+      `${orders.length} recent orders loaded from Google Sheet`;
+
+    if(!$('itemsContainer').children.length){
+      addItemRow();
+    }
+
+    renderOrders();
+
+  }catch(error){
+
+    $('connectionStatus').textContent =
+      'Google Sheet connection failed: ' + error.message;
+
+    $('connectionStatus').classList.add('error');
+
+    $('ordersStatus').textContent =
+      'Could not load orders. Check Apps Script URL and deployment access.';
+
+    $('ordersList').innerHTML = `
       <div class="empty">
-        No orders found yet.<br><br>
-        Create your first order to see it here.
+        Unable to load saved orders.<br><br>
+        Check API_URL and make sure the Apps Script deployment
+        is accessible to anyone with the link.
       </div>
     `;
 
-    return;
-
+    toast(error.message,true);
   }
-
-  ordersList.innerHTML = filtered.map(order => `
-
-    <div class="order-card">
-
-      <div class="order-head">
-
-        <div>
-          <div class="order-id">#${escapeHtml(order.id)}</div>
-          <h4>${escapeHtml(order.name)}</h4>
-        </div>
-
-        <div class="status ${order.status.toLowerCase()}">
-          ${order.status}
-        </div>
-
-      </div>
-
-      <div class="order-info">
-
-        <div>
-          <strong>Phone:</strong>
-          ${escapeHtml(order.phone)}
-        </div>
-
-        <div>
-
-          <strong>Order Details:</strong>
-
-          ${(order.items || []).map(item => `
-
-            <div class="order-line">
-
-              <span>
-                ${escapeHtml(item.name)}
-                × ${item.qty}
-                @ ${money(item.price)}
-              </span>
-
-              <strong>${money(item.amount)}</strong>
-
-            </div>
-
-          `).join("")}
-
-          <div class="order-line order-total-line">
-            <span>Grand Total</span>
-            <strong>${money(order.total)}</strong>
-          </div>
-
-        </div>
-
-        <div>
-          <strong>Created:</strong>
-          ${escapeHtml(order.time)}
-        </div>
-
-      </div>
-
-      <div class="actions">
-
-        ${order.status === "Pending" ? `
-
-          <button
-            class="small-btn ready-btn"
-            onclick="markReady('${order.id}')"
-          >
-            Mark Ready
-          </button>
-
-        ` : ""}
-
-        <button
-          class="small-btn whatsapp-btn"
-          onclick="sendWhatsApp('${order.id}')"
-        >
-          WhatsApp Customer
-        </button>
-
-      </div>
-
-    </div>
-
-  `).join("");
-
 }
 
+/* =========================================
+   INITIALIZE
+   ========================================= */
 
-// =====================================
-// MARK ORDER READY
-// =====================================
+document.addEventListener('DOMContentLoaded',()=>{
 
-function markReady(id) {
-
-  const order = orders.find(
-    o => o.id === id
+  $('discount').addEventListener(
+    'input',
+    updateTotals
   );
 
-  if (!order) return;
-
-  order.status = "Ready";
-
-  renderOrders();
-
-}
-
-
-// =====================================
-// WHATSAPP NOTIFICATION
-// =====================================
-
-function sendWhatsApp(id) {
-
-  const order = orders.find(
-    o => o.id === id
-  );
-
-  if (!order) return;
-
-  const itemLines = order.items.map(item =>
-
-    `${item.name} x ${item.qty} @ ${money(item.price)} = ${money(item.amount)}`
-
-  ).join("\n");
-
-  const message =
-
-`Hello ${order.name},
-
-Your order ${order.id} is ${
-  order.status === "Ready"
-    ? "ready and waiting for you"
-    : "currently being prepared"
-} at The Mom's Kitchen.
-
-Order Details:
-
-${itemLines}
-
-Grand Total: ${money(order.total)}
-
-Thank you!
-The Mom's Kitchen`;
-
-  const phone = "91" + order.phone;
-
-  const url =
-    "https://wa.me/" +
-    phone +
-    "?text=" +
-    encodeURIComponent(message);
-
-  window.open(url, "_blank");
-
-}
-
-
-// =====================================
-// INITIALIZE DASHBOARD
-// =====================================
-
-addItemRow();
-
-renderOrders();
+  loadData();
+});
 
 </script>
-
 </body>
 </html>
