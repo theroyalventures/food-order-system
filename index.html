@@ -1,560 +1,1068 @@
-<!DOCTYPE html><html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Mom's Kitchen • Premium Order Dashboard</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mom's Kitchen - Order Dashboard</title>
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, rgba(0,180,255,.18), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(0,120,255,.12), transparent 35%),
-        linear-gradient(135deg, #07111f, #0d1c31 45%, #12284a);
-      color: #fff;
-      padding: 30px;
-      overflow-x: hidden;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    .glow {
-      position: fixed;
-      width: 350px;
-      height: 350px;
-      border-radius: 50%;
-      filter: blur(80px);
-      z-index: 0;
-      opacity: .35;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
-    .glow.one {
-      top: -120px;
-      left: -80px;
-      background: #00bfff;
-    }
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(0,180,255,.18), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(0,120,255,.12), transparent 35%),
+    linear-gradient(135deg, #07111f, #0d1c31 45%, #12284a);
+  color: #fff;
+  padding: 30px;
+  overflow-x: hidden;
+}
 
-    .glow.two {
-      bottom: -140px;
-      right: -80px;
-      background: #4c6fff;
-    }
+.container {
+  max-width: 1400px;
+  margin: auto;
+  position: relative;
+  z-index: 2;
+}
 
-    .container {
-      max-width: 1400px;
-      margin: auto;
-      position: relative;
-      z-index: 2;
-    }
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
 
-    .hero {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-    }
+.hero-left { max-width: 760px; }
 
-    .hero-left {
-      max-width: 760px;
-    }
+.badge {
+  display: inline-flex;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.1);
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #7fd7ff;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 14px;
-      border-radius: 999px;
-      color: #7fd7ff;
-      font-size: 12px;
-      letter-spacing: 1px;
-      margin-bottom: 16px;
-      backdrop-filter: blur(14px);
-    }
+h1 {
+  font-size: clamp(30px, 5vw, 58px);
+  line-height: 1.08;
+  margin-bottom: 14px;
+}
 
-    h1 {
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 1.08;
-      margin-bottom: 14px;
-      font-weight: 700;
-    }
+.hero p {
+  color: rgba(255,255,255,.72);
+  line-height: 1.7;
+  font-size: 15px;
+}
 
-    .hero p {
-      color: rgba(255,255,255,0.72);
-      line-height: 1.7;
-      font-size: 15px;
-      max-width: 640px;
-    }
+.stats {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
 
-    .stats {
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
+.card {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 24px;
+  backdrop-filter: blur(22px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.25);
+}
 
-    .card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 28px;
-      backdrop-filter: blur(22px);
-      box-shadow: 0 18px 40px rgba(0,0,0,.25);
-    }
+.stat-card {
+  min-width: 160px;
+  padding: 22px;
+}
 
-    .stat-card {
-      min-width: 180px;
-      padding: 24px;
-    }
+.stat-card span {
+  display: block;
+  color: rgba(255,255,255,.65);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
 
-    .stat-card span {
-      display: block;
-      color: rgba(255,255,255,.65);
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
+.stat-card h2 { font-size: 38px; }
 
-    .stat-card h2 {
-      font-size: 42px;
-      color: #fff;
-    }
+.pending h2 { color: #ffb347; }
+.ready h2 { color: #69ffb0; }
 
-    .pending h2 {
-      color: #ffb347;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 24px;
+}
 
-    .ready h2 {
-      color: #69ffb0;
-    }
+.panel { padding: 26px; }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 24px;
-    }
+.panel h3 {
+  font-size: 23px;
+  margin-bottom: 8px;
+}
 
-    .panel {
-      padding: 28px;
-    }
+.sub {
+  color: rgba(255,255,255,.6);
+  font-size: 13px;
+  margin-bottom: 24px;
+}
 
-    .panel h3 {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
+.input-group { margin-bottom: 17px; }
 
-    .panel .sub {
-      color: rgba(255,255,255,.6);
-      font-size: 14px;
-      margin-bottom: 26px;
-    }
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: rgba(255,255,255,.75);
+}
 
-    .input-group {
-      margin-bottom: 18px;
-    }
+.input-group input,
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 13px;
+  padding: 13px 14px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
 
-    .input-group label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 13px;
-      color: rgba(255,255,255,.75);
-    }
+.input-group select option {
+  background: #10213a;
+  color: #fff;
+}
 
-    .input-group input,
-    .input-group textarea {
-      width: 100%;
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding: 16px 18px;
-      color: #fff;
-      font-size: 15px;
-      outline: none;
-      transition: .25s ease;
-    }
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #00bfff;
+  box-shadow: 0 0 0 3px rgba(0,191,255,.12);
+}
 
-    .input-group textarea {
-      min-height: 140px;
-      resize: vertical;
-    }
+.input-group input::placeholder {
+  color: rgba(255,255,255,.35);
+}
 
-    .input-group input:focus,
-    .input-group textarea:focus {
-      border-color: rgba(0,191,255,.7);
-      box-shadow: 0 0 0 4px rgba(0,191,255,.15);
-    }
+.item-row {
+  display: grid;
+  grid-template-columns: minmax(0,1.5fr) 65px 85px 85px 34px;
+  gap: 7px;
+  align-items: end;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 15px;
+  background: rgba(255,255,255,.035);
+}
 
-    .input-group input::placeholder,
-    .input-group textarea::placeholder {
-      color: rgba(255,255,255,.35);
-    }
+.item-row .input-group { margin: 0; min-width: 0; }
 
-    .btn {
-      border: none;
-      width: 100%;
-      padding: 18px;
-      border-radius: 18px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .25s ease;
-    }
+.item-row .input-group label {
+  font-size: 10px;
+  white-space: nowrap;
+}
 
-    .btn-primary {
-      background: linear-gradient(135deg, #00bfff, #4c6fff);
-      color: #fff;
-      box-shadow: 0 12px 28px rgba(0,140,255,.35);
-    }
+.item-row input,
+.item-row select {
+  padding: 10px 7px;
+  font-size: 12px;
+  border-radius: 9px;
+}
 
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 34px rgba(0,140,255,.45);
-    }
+.item-row .item-price[readonly],
+.item-row .item-amount {
+  color: #8fe0ff;
+}
 
-    .top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 22px;
-      flex-wrap: wrap;
-    }
+.custom-name {
+  margin-top: 6px;
+  display: none;
+}
 
-    .search {
-      width: 320px;
-      max-width: 100%;
-    }
+.remove-item {
+  height: 39px;
+  border: none;
+  border-radius: 9px;
+  background: rgba(255,90,90,.16);
+  color: #ff9b9b;
+  font-size: 20px;
+  cursor: pointer;
+}
 
-    .orders {
-      display: flex;
-      gap: 18px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding-bottom: 10px;
-      scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0,191,255,.45) transparent;
-    }
+.item-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0 18px;
+}
 
-    .orders::-webkit-scrollbar {
-      height: 8px;
-    }
+.add-item-btn {
+  border: 1px solid rgba(0,191,255,.35);
+  color: #8fe0ff;
+  background: rgba(0,191,255,.10);
+  padding: 11px 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
 
-    .orders::-webkit-scrollbar-track {
-      background: transparent;
-    }
+.grand-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-radius: 15px;
+  background: rgba(0,191,255,.10);
+  border: 1px solid rgba(0,191,255,.22);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
 
-    .orders::-webkit-scrollbar-thumb {
-      background: rgba(0,191,255,.45);
-      border-radius: 999px;
-    }
+.grand-total strong {
+  font-size: 23px;
+  color: #8fe0ff;
+}
 
-    .order-card {
-      min-width: 380px;
-      max-width: 380px;
-      flex-shrink: 0;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 24px;
-      padding: 22px;
-      transition: .25s ease;
-    }
+.btn {
+  border: none;
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-    .order-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(0,191,255,.25);
-    }
+.btn-primary {
+  background: linear-gradient(135deg, #00bfff, #4c6fff);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(0,140,255,.35);
+}
 
-    .order-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
 
-    .order-head h4 {
-      font-size: 20px;
-      margin-bottom: 4px;
-    }
+.search { width: 300px; max-width: 100%; }
 
-    .order-id {
-      color: #7fd7ff;
-      font-size: 13px;
-    }
+.orders {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
 
-    .status {
-      padding: 10px 16px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: .5px;
-      height: fit-content;
-    }
+.order-card {
+  min-width: 340px;
+  max-width: 380px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 20px;
+}
 
-    .status.pending {
-      background: rgba(255,179,71,.14);
-      color: #ffb347;
-      border: 1px solid rgba(255,179,71,.35);
-    }
+.order-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
 
-    .status.ready {
-      background: rgba(105,255,176,.12);
-      color: #69ffb0;
-      border: 1px solid rgba(105,255,176,.28);
-    }
+.order-head h4 { font-size: 19px; }
 
-    .order-info {
-      display: grid;
-      gap: 10px;
-      color: rgba(255,255,255,.75);
-      font-size: 14px;
-      margin-bottom: 18px;
-    }
+.order-id {
+  color: #7fd7ff;
+  font-size: 12px;
+}
 
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+.status {
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 11px;
+  height: fit-content;
+  font-weight: 600;
+}
 
-    .small-btn {
-      flex: 1;
-      min-width: 150px;
-      border: none;
-      padding: 14px;
-      border-radius: 16px;
-      cursor: pointer;
-      font-weight: 600;
-      color: white;
-      transition: .2s ease;
-    }
+.status.pending {
+  background: rgba(255,179,71,.14);
+  color: #ffb347;
+}
 
-    .ready-btn {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-    }
+.status.ready {
+  background: rgba(105,255,176,.12);
+  color: #69ffb0;
+}
 
-    .whatsapp-btn {
-      background: linear-gradient(135deg, #25D366, #128C7E);
-    }
+.order-info {
+  display: grid;
+  gap: 10px;
+  color: rgba(255,255,255,.75);
+  font-size: 13px;
+  margin-bottom: 18px;
+}
 
-    .small-btn:hover {
-      transform: translateY(-2px);
-    }
+.order-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+}
 
-    .empty {
-      text-align: center;
-      padding: 70px 20px;
-      color: rgba(255,255,255,.45);
-      border: 1px dashed rgba(255,255,255,.12);
-      border-radius: 22px;
-    }
+.order-total-line {
+  border-top: 1px solid rgba(255,255,255,.15);
+  margin-top: 8px;
+  padding-top: 12px;
+  font-weight: 700;
+  color: #8fe0ff;
+}
 
-    @media (max-width: 980px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-      .hero {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+.small-btn {
+  flex: 1;
+  min-width: 130px;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+}
 
-      .order-card {
-        min-width: 88vw;
-        max-width: 88vw;
-      }
-    }
+.ready-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
 
-      .hero {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style></head>
+.whatsapp-btn {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255,255,255,.45);
+  border: 1px dashed rgba(255,255,255,.12);
+  border-radius: 20px;
+  width: 100%;
+}
+
+@media(max-width:1050px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+@media(max-width:600px) {
+  body { padding: 14px; }
+  .panel { padding: 17px; }
+  .hero { align-items: flex-start; }
+  .item-row {
+    grid-template-columns: minmax(0,1fr) 65px;
+  }
+  .item-row .item-select-wrap { grid-column: 1 / -1; }
+  .item-row .remove-item {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .order-card {
+    min-width: 85vw;
+    max-width: 85vw;
+  }
+}
+</style>
+</head>
+
 <body>
-  <div class="glow one"></div>
-  <div class="glow two"></div>  <div class="container"><div class="hero">
-  <div class="hero-left">
-    <div class="badge">THE Mom's Kitchen • PREMIUM DASHBOARD</div>
-    <h1>Manage Orders  & Notify Customers Instantly</h1>
-    <p>
-      Create orders, track pending requests, mark them ready and instantly open WhatsApp notification links for customers from one premium dashboard.
-    </p>
-  </div>
 
-  <div class="stats">
-    <div class="card stat-card pending">
-      <span>Total Pending</span>
-      <h2 id="pendingCount">0</h2>
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-left">
+      <div class="badge">THE MOM'S KITCHEN • ORDER DASHBOARD</div>
+      <h1>Manage Orders & Notify Customers</h1>
+      <p>Create orders, calculate bills automatically, track preparation and notify customers through WhatsApp.</p>
     </div>
 
-    <div class="card stat-card ready">
-      <span>Ready To Serve</span>
-      <h2 id="readyCount">0</h2>
-    </div>
-  </div>
-</div>
-
-<div class="grid">
-  <div class="card panel">
-    <h3>Create New Order</h3>
-    <p class="sub">Ask name & contact number with Customer and fill the details. </p>
-
-    <div class="input-group">
-      <label>Customer Name</label>
-      <input type="text" id="customerName" placeholder="Enter customer name">
-    </div>
-
-    <div class="input-group">
-      <label>Contact Number</label>
-      <input type="tel" id="customerPhone" placeholder="Enter mobile number">
-    </div>
-
-    <div class="input-group">
-      <label>Order Details</label>
-      <textarea id="orderItem" placeholder="Example:
-
-2 Double Masala Maggie 1 Tea 3 Cigarette"></textarea> </div>
-
-<button class="btn btn-primary" onclick="addOrder()">+ Create Premium Order</button>
-  </div>
-
-  <div class="card panel">
-    <div class="top-row">
-      <div>
-        <h3>Live Orders</h3>
-        <p class="sub" style="margin:6px 0 0;">Search and manage all customer orders.</p>
+    <div class="stats">
+      <div class="card stat-card pending">
+        <span>Total Pending</span>
+        <h2 id="pendingCount">0</h2>
       </div>
 
-      <div class="input-group search" style="margin:0;">
-        <input type="text" id="search" placeholder="Search by name or number" onkeyup="renderOrders()">
+      <div class="card stat-card ready">
+        <span>Ready To Serve</span>
+        <h2 id="readyCount">0</h2>
       </div>
     </div>
-
-    <div id="ordersList" class="orders"></div>
   </div>
+
+  <div class="grid">
+
+    <!-- CREATE ORDER -->
+    <div class="card panel">
+
+      <h3>Create New Order</h3>
+      <p class="sub">Enter customer information and add order items.</p>
+
+      <div class="input-group">
+        <label>Customer Name</label>
+        <input type="text" id="customerName" placeholder="Enter customer name">
+      </div>
+
+      <div class="input-group">
+        <label>Contact Number</label>
+        <input type="tel" id="customerPhone" placeholder="Enter mobile number">
+      </div>
+
+      <div class="input-group">
+        <label>Order Details</label>
+        <div id="orderItems"></div>
+      </div>
+
+      <div class="item-toolbar">
+        <button type="button" class="add-item-btn" onclick="addItemRow()">
+          + Add Item
+        </button>
+        <span style="font-size:11px;color:#aaa;">
+          Select item and enter quantity
+        </span>
+      </div>
+
+      <div class="grand-total">
+        <span>Grand Total</span>
+        <strong id="orderGrandTotal">₹0.00</strong>
+      </div>
+
+      <button class="btn btn-primary" onclick="addOrder()">
+        + Create Order
+      </button>
+
+    </div>
+
+    <!-- LIVE ORDERS -->
+    <div class="card panel">
+
+      <div class="top-row">
+        <div>
+          <h3>Live Orders</h3>
+          <p class="sub" style="margin:6px 0 0;">
+            Search and manage customer orders.
+          </p>
+        </div>
+
+        <div class="input-group search" style="margin:0;">
+          <input
+            type="text"
+            id="search"
+            placeholder="Search by name or number"
+            oninput="renderOrders()"
+          >
+        </div>
+      </div>
+
+      <div id="ordersList" class="orders"></div>
+
+    </div>
+
+  </div>
+
 </div>
 
-  </div>  <script>
-    let orders = [];
+<script>
 
-    function addOrder() {
-      const name = document.getElementById('customerName').value.trim();
-      const phone = document.getElementById('customerPhone').value.trim();
-      const item = document.getElementById('orderItem').value.trim();
+// =====================================
+// MENU / ITEM MASTER
+// =====================================
 
-      if (!name || !phone || !item) {
-        alert('Please fill customer name, mobile number and order details.');
-        return;
-      }
+// Add or update your menu items and prices here.
 
-      const order = {
-        id: 'ORD' + Date.now().toString().slice(-5),
+const MENU_ITEMS = [
+  { name: "Tea", price: 20 },
+  { name: "Lunch", price: 90 },
+  { name: "Aloo Paratha", price: 40 },
+  { name: "Coffee", price: 20 },
+  { name: "Cold Drink", price: 40 },
+  { name: "Water Bottle", price: 20 }
+];
+
+// Orders storage
+let orders = [];
+
+
+// =====================================
+// HELPER FUNCTIONS
+// =====================================
+
+function money(value) {
+  return "₹" + Number(value || 0).toFixed(2);
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+
+// =====================================
+// ADD ITEM ROW
+// =====================================
+
+function addItemRow() {
+
+  const container = document.getElementById("orderItems");
+
+  const row = document.createElement("div");
+  row.className = "item-row";
+
+  const options = MENU_ITEMS.map(item => `
+    <option value="${escapeHtml(item.name)}">
+      ${escapeHtml(item.name)} - ${money(item.price)}
+    </option>
+  `).join("");
+
+  row.innerHTML = `
+
+    <div class="input-group item-select-wrap">
+
+      <label>Item Name</label>
+
+      <select class="item-select" onchange="handleItemChange(this)">
+
+        <option value="">Select Item</option>
+
+        ${options}
+
+        <option value="__custom__">+ Custom Item</option>
+
+      </select>
+
+      <input
+        type="text"
+        class="custom-name"
+        placeholder="Enter item name"
+      >
+
+    </div>
+
+    <div class="input-group">
+      <label>Qty</label>
+      <input
+        type="number"
+        class="item-qty"
+        min="1"
+        step="1"
+        value="1"
+        oninput="updateItemTotals()"
+      >
+    </div>
+
+    <div class="input-group">
+      <label>Price</label>
+      <input
+        type="number"
+        class="item-price"
+        min="0"
+        step="0.01"
+        placeholder="0"
+        readonly
+        oninput="updateItemTotals()"
+      >
+    </div>
+
+    <div class="input-group">
+      <label>Amount</label>
+      <input
+        type="text"
+        class="item-amount"
+        value="₹0.00"
+        readonly
+      >
+    </div>
+
+    <button
+      type="button"
+      class="remove-item"
+      onclick="removeItemRow(this)"
+      title="Remove item"
+    >×</button>
+
+  `;
+
+  container.appendChild(row);
+
+  updateItemTotals();
+
+}
+
+
+// =====================================
+// ITEM SELECTION / AUTO PRICE
+// =====================================
+
+function handleItemChange(select) {
+
+  const row = select.closest(".item-row");
+
+  const customName = row.querySelector(".custom-name");
+  const priceInput = row.querySelector(".item-price");
+
+  if (select.value === "__custom__") {
+
+    customName.style.display = "block";
+
+    priceInput.readOnly = false;
+    priceInput.value = "";
+
+  } else {
+
+    customName.style.display = "none";
+    customName.value = "";
+
+    priceInput.readOnly = true;
+
+    const item = MENU_ITEMS.find(
+      product => product.name === select.value
+    );
+
+    priceInput.value = item ? item.price : "";
+
+  }
+
+  updateItemTotals();
+
+}
+
+
+// =====================================
+// REMOVE ITEM
+// =====================================
+
+function removeItemRow(button) {
+
+  const rows = document.querySelectorAll(
+    "#orderItems .item-row"
+  );
+
+  if (rows.length === 1) {
+
+    const row = button.closest(".item-row");
+
+    row.querySelector(".item-select").value = "";
+    row.querySelector(".custom-name").value = "";
+    row.querySelector(".custom-name").style.display = "none";
+    row.querySelector(".item-price").value = "";
+    row.querySelector(".item-qty").value = 1;
+
+  } else {
+
+    button.closest(".item-row").remove();
+
+  }
+
+  updateItemTotals();
+
+}
+
+
+// =====================================
+// AUTOMATIC CALCULATION
+// =====================================
+
+function updateItemTotals() {
+
+  let grandTotal = 0;
+
+  document.querySelectorAll(
+    "#orderItems .item-row"
+  ).forEach(row => {
+
+    const qty = Number(
+      row.querySelector(".item-qty").value
+    ) || 0;
+
+    const price = Number(
+      row.querySelector(".item-price").value
+    ) || 0;
+
+    const amount = qty * price;
+
+    row.querySelector(".item-amount").value =
+      money(amount);
+
+    grandTotal += amount;
+
+  });
+
+  document.getElementById(
+    "orderGrandTotal"
+  ).textContent = money(grandTotal);
+
+}
+
+
+// =====================================
+// GET SELECTED ITEMS
+// =====================================
+
+function getOrderItems() {
+
+  const items = [];
+
+  document.querySelectorAll(
+    "#orderItems .item-row"
+  ).forEach(row => {
+
+    const select = row.querySelector(".item-select");
+
+    const name = select.value === "__custom__"
+      ? row.querySelector(".custom-name").value.trim()
+      : select.value;
+
+    const qty = Number(
+      row.querySelector(".item-qty").value
+    );
+
+    const priceInput = row.querySelector(".item-price");
+    const price = Number(priceInput.value);
+
+    if (
+      name &&
+      Number.isInteger(qty) &&
+      qty > 0 &&
+      priceInput.value !== "" &&
+      Number.isFinite(price) &&
+      price >= 0
+    ) {
+
+      items.push({
         name,
-        phone,
-        item,
-        status: 'Pending',
-        time: new Date().toLocaleString()
-      };
+        qty,
+        price,
+        amount: qty * price
+      });
 
-      orders.unshift(order);
-
-      document.getElementById('customerName').value = '';
-      document.getElementById('customerPhone').value = '';
-      document.getElementById('orderItem').value = '';
-
-      renderOrders();
-
-      // Future Google Sheet Integration
-      // fetch('YOUR_APPS_SCRIPT_URL', {
-      //   method: 'POST',
-      //   body: JSON.stringify(order)
-      // })
     }
 
-    function renderOrders() {
-      const search = document.getElementById('search').value.toLowerCase();
-      const ordersList = document.getElementById('ordersList');
+  });
 
-      const filtered = orders.filter(order =>
-        order.name.toLowerCase().includes(search) ||
-        order.phone.includes(search)
-      );
+  return items;
 
-      document.getElementById('pendingCount').textContent = orders.filter(o => o.status === 'Pending').length;
-      document.getElementById('readyCount').textContent = orders.filter(o => o.status === 'Ready').length;
+}
 
-      if (!filtered.length) {
-        ordersList.innerHTML = `
-          <div class="empty">
-            No orders found yet.<br><br>
-            Create your first order to see it here.
-          </div>
-        `;
-        return;
-      }
 
-      ordersList.innerHTML = filtered.map(order => `
-        <div class="order-card">
-          <div class="order-head">
-            <div>
-              <div class="order-id">#${order.id}</div>
-              <h4>${order.name}</h4>
+// =====================================
+// CREATE NEW ORDER
+// =====================================
+
+function addOrder() {
+
+  const name = document.getElementById(
+    "customerName"
+  ).value.trim();
+
+  const phone = document.getElementById(
+    "customerPhone"
+  ).value.trim();
+
+  const items = getOrderItems();
+
+  if (!name || !phone || !items.length) {
+
+    alert(
+      "Please enter customer name, mobile number and at least one valid item."
+    );
+
+    return;
+
+  }
+
+  if (!/^\d{10}$/.test(phone)) {
+
+    alert("Please enter a valid 10-digit mobile number.");
+
+    return;
+
+  }
+
+  const total = items.reduce(
+    (sum, item) => sum + item.amount,
+    0
+  );
+
+  const order = {
+
+    id: "ORD" + Date.now().toString().slice(-6),
+
+    name,
+
+    phone,
+
+    items,
+
+    total,
+
+    status: "Pending",
+
+    time: new Date().toLocaleString()
+
+  };
+
+  orders.unshift(order);
+
+  document.getElementById("customerName").value = "";
+  document.getElementById("customerPhone").value = "";
+
+  document.getElementById("orderItems").innerHTML = "";
+
+  addItemRow();
+
+  renderOrders();
+
+}
+
+
+// =====================================
+// RENDER LIVE ORDERS
+// =====================================
+
+function renderOrders() {
+
+  const search = document.getElementById(
+    "search"
+  ).value.toLowerCase();
+
+  const ordersList = document.getElementById(
+    "ordersList"
+  );
+
+  const filtered = orders.filter(order =>
+
+    order.name.toLowerCase().includes(search) ||
+    order.phone.includes(search) ||
+    order.id.toLowerCase().includes(search)
+
+  );
+
+  document.getElementById(
+    "pendingCount"
+  ).textContent = orders.filter(
+    o => o.status === "Pending"
+  ).length;
+
+  document.getElementById(
+    "readyCount"
+  ).textContent = orders.filter(
+    o => o.status === "Ready"
+  ).length;
+
+  if (!filtered.length) {
+
+    ordersList.innerHTML = `
+      <div class="empty">
+        No orders found yet.<br><br>
+        Create your first order to see it here.
+      </div>
+    `;
+
+    return;
+
+  }
+
+  ordersList.innerHTML = filtered.map(order => `
+
+    <div class="order-card">
+
+      <div class="order-head">
+
+        <div>
+          <div class="order-id">#${escapeHtml(order.id)}</div>
+          <h4>${escapeHtml(order.name)}</h4>
+        </div>
+
+        <div class="status ${order.status.toLowerCase()}">
+          ${order.status}
+        </div>
+
+      </div>
+
+      <div class="order-info">
+
+        <div>
+          <strong>Phone:</strong>
+          ${escapeHtml(order.phone)}
+        </div>
+
+        <div>
+
+          <strong>Order Details:</strong>
+
+          ${(order.items || []).map(item => `
+
+            <div class="order-line">
+
+              <span>
+                ${escapeHtml(item.name)}
+                × ${item.qty}
+                @ ${money(item.price)}
+              </span>
+
+              <strong>${money(item.amount)}</strong>
+
             </div>
 
-            <div class="status ${order.status.toLowerCase()}">${order.status}</div>
+          `).join("")}
+
+          <div class="order-line order-total-line">
+            <span>Grand Total</span>
+            <strong>${money(order.total)}</strong>
           </div>
 
-          <div class="order-info">
-            <div><strong>Phone:</strong> ${order.phone}</div>
-            <div><strong>Order:</strong><br>${order.item.replace(/\n/g, '<br>')}</div>
-            <div><strong>Created:</strong> ${order.time}</div>
-          </div>
-
-          <div class="actions">
-            ${order.status === 'Pending' ? `
-              <button class="small-btn ready-btn" onclick="markReady('${order.id}')">
-                Mark Ready
-              </button>
-            ` : ''}
-
-            <button class="small-btn whatsapp-btn" onclick="sendWhatsApp('${order.id}')">
-              WhatsApp Customer
-            </button>
-          </div>
         </div>
-      `).join('');
-    }
 
-    function markReady(id) {
-      const order = orders.find(o => o.id === id);
-      if (!order) return;
+        <div>
+          <strong>Created:</strong>
+          ${escapeHtml(order.time)}
+        </div>
 
-      order.status = 'Ready';
-      renderOrders();
+      </div>
 
-      // Future Google Sheet status update
-      // fetch('YOUR_APPS_SCRIPT_URL', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ action: 'ready', id })
-      // })
-    }
+      <div class="actions">
 
-    function sendWhatsApp(id) {
-      const order = orders.find(o => o.id === id);
-      if (!order) return;
+        ${order.status === "Pending" ? `
 
-      const message = `Hello ${order.name},%0A%0AYour order ${order.id} is ${order.status === 'Ready' ? 'ready and waiting for you' : 'currently being prepared'} at The Food Corner.%0A%0AOrder Details:%0A${encodeURIComponent(order.item)}%0A%0AThank you!`;
+          <button
+            class="small-btn ready-btn"
+            onclick="markReady('${order.id}')"
+          >
+            Mark Ready
+          </button>
 
-      window.open(`https://wa.me/91${order.phone}?text=${message}`, '_blank');
-    }
+        ` : ""}
 
-    renderOrders();
-  </script></body>
+        <button
+          class="small-btn whatsapp-btn"
+          onclick="sendWhatsApp('${order.id}')"
+        >
+          WhatsApp Customer
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+// =====================================
+// MARK ORDER READY
+// =====================================
+
+function markReady(id) {
+
+  const order = orders.find(
+    o => o.id === id
+  );
+
+  if (!order) return;
+
+  order.status = "Ready";
+
+  renderOrders();
+
+}
+
+
+// =====================================
+// WHATSAPP NOTIFICATION
+// =====================================
+
+function sendWhatsApp(id) {
+
+  const order = orders.find(
+    o => o.id === id
+  );
+
+  if (!order) return;
+
+  const itemLines = order.items.map(item =>
+
+    `${item.name} x ${item.qty} @ ${money(item.price)} = ${money(item.amount)}`
+
+  ).join("\n");
+
+  const message =
+
+`Hello ${order.name},
+
+Your order ${order.id} is ${
+  order.status === "Ready"
+    ? "ready and waiting for you"
+    : "currently being prepared"
+} at The Mom's Kitchen.
+
+Order Details:
+
+${itemLines}
+
+Grand Total: ${money(order.total)}
+
+Thank you!
+The Mom's Kitchen`;
+
+  const phone = "91" + order.phone;
+
+  const url =
+    "https://wa.me/" +
+    phone +
+    "?text=" +
+    encodeURIComponent(message);
+
+  window.open(url, "_blank");
+
+}
+
+
+// =====================================
+// INITIALIZE DASHBOARD
+// =====================================
+
+addItemRow();
+
+renderOrders();
+
+</script>
+
+</body>
 </html>
